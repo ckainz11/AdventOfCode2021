@@ -1,8 +1,9 @@
 package day3
 
+import util.getCol
 import util.getInputAsText
 import util.transpose
-import java.util.*
+
 
 val originalInput = getInputAsText(3)
 fun solve1(): Int =
@@ -18,10 +19,11 @@ fun solve1(): Int =
 
 
 fun solve2(): Int = findRatings(Pair(originalInput.lines(), originalInput.lines()), 0).run { this.first[0].toInt(2) * this.second[0].toInt(2) }
+
 fun findRatings(input: Pair<List<String>, List<String>>, iteration: Int): Pair<List<String>, List<String>> {
     var result = Pair(mutableListOf<String>(), mutableListOf<String>())
     if (input.first.size > 1) {
-        val transposedFirst = transpose(input.first)[iteration]
+        val transposedFirst = getCol(input.first.map {it.toCharArray().toList()}, iteration)
         val max = (transposedFirst.count { it == '1' } >= transposedFirst.count { it == '0' })
         input.first.forEach {
             if (max && it[iteration] == '1')
@@ -33,7 +35,7 @@ fun findRatings(input: Pair<List<String>, List<String>>, iteration: Int): Pair<L
         result.first.addAll(input.first)
     }
     if (input.second.size > 1) {
-        val transposedSecond = transpose(input.second)[iteration]
+        val transposedSecond = getCol(input.second.map {it.toCharArray().toList()}, iteration)
         val min = (transposedSecond.count { it == '0' } <= transposedSecond.count { it == '1' })
         input.second.forEach {
             if (min && it[iteration] == '0')

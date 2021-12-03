@@ -11,3 +11,11 @@ fun transpose(matrix: List<String>): List<String> {
     }
     return transpose.map { it -> it.joinToString("") }
 }
+fun <T> getCol(array: List<List<T>>, col: Int): List<T> {
+    val rows = array.size
+    val column = mutableListOf<T>()
+    (0 until rows).forEach {
+        column.add(array[it][col])
+    }
+    return column
+}
