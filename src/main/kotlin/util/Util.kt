@@ -1,5 +1,30 @@
 package util
 
+typealias Matrix<T> = List<List<T>>
+fun <T> matrixOf(vararg rows: List<T>): Matrix<T> = List(rows.size) {i -> rows[i]}
+fun <T> Matrix<T>.getColumn(col: Int): List<T> = getCol(this, col)
+fun <T, R> Matrix<T>.mapMatrix(transform: (T) -> R): Matrix<R> = this.map { it.map(transform) }
+fun <T> Matrix<T>.matrixToString(): String = this.joinToString("\n") { it.joinToString(", ") }
+fun <T: Comparable<T>> Matrix<T>.matrixMax(): T = this.mapNotNull { it.maxOrNull() }.maxOrNull()!!
+fun <T: Comparable<T>> Matrix<T>.matrixMin(): T = this.mapNotNull { it.minOrNull() }.minOrNull()!!
+fun <T> Matrix<T>.getColNum(): Int = this[0].size
+fun <T> Matrix<T>.getRowNum(): Int = this.size
+fun <T> Matrix<T>.transposed(times: Int = 1): Matrix<T> = transposeMatrix(this, times)
+data class Point(val x: Int, val y: Int)
+data class Point3(val x: Int, val y: Int, val z: Int)
+
+/*----- Helper Functions -----*/
+
+private fun <T> transposeMatrix(matrix: Matrix<T>): Matrix<T> = List(matrix.getColNum()) { i -> matrix.getColumn(i) }
+private fun <T> transposeMatrix(matrix: Matrix<T>, times: Int): Matrix<T> {
+    var newMatrix = matrix
+    repeat(times) {
+        newMatrix = transposeMatrix(newMatrix)
+    }
+    return newMatrix
+}
+/*----- Old functions -----*/
+
 fun transpose(matrix: List<String>): List<String> {
     val col = matrix[0].length
     val row = matrix.size
@@ -11,6 +36,7 @@ fun transpose(matrix: List<String>): List<String> {
     }
     return transpose.map { it -> it.joinToString("") }
 }
+
 fun <T> getCol(array: List<List<T>>, col: Int): List<T> {
     val rows = array.size
     val column = mutableListOf<T>()

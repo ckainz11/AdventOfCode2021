@@ -4,8 +4,7 @@ import util.getInputAsText
 
 val input = getInputAsText(4).lines().filter { it.isNotBlank() }
 val draws = input.take(1)[0].split(",").map(String::toInt)
-val boards =
-    input.drop(1).chunked(5).map { it -> BingoBoard(it.map { it.split(Regex(" +")).filter { s -> s.isNotBlank() } }) }
+val boards = input.drop(1).chunked(5).map { it -> BingoBoard(it.map { it.split(Regex(" +")).filter { s -> s.isNotBlank() } }) }
 
 
 fun solve1(): Int {
