@@ -1,5 +1,5 @@
-import day3.solve1
-import day3.solve2
+import day4.solve1
+import day4.solve2
 import kotlin.system.measureTimeMillis
 
 fun main() {
@@ -9,7 +9,7 @@ fun main() {
     }
     println("In ${time1} ms")
     val time2 = measureTimeMillis {
-        println("Solution for part 1: ${solve2()}")
+        println("Solution for part 2: ${solve2()}")
     }
     println("In ${time2} ms")
 }
