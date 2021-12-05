@@ -10,6 +10,8 @@ fun <T: Comparable<T>> Matrix<T>.matrixMin(): T = this.mapNotNull { it.minOrNull
 fun <T> Matrix<T>.getColNum(): Int = this[0].size
 fun <T> Matrix<T>.getRowNum(): Int = this.size
 fun <T> Matrix<T>.transposed(times: Int = 1): Matrix<T> = transposeMatrix(this, times)
+fun <T> emptyMatrixOf(rows: Int, columns: Int, default: T) = MutableList(rows) {MutableList(columns) {default} }
+fun <T> Matrix<T>.count(predicate: (T) -> Boolean) = this.sumOf { it.count(predicate) }
 data class Point(val x: Int, val y: Int)
 data class Point3(val x: Int, val y: Int, val z: Int)
 
