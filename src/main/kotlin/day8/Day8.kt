@@ -6,22 +6,17 @@ val uniqueLengths = setOf(2, 4, 3, 7)
 val input = getInputAsText(8).lines()
 fun solve1(): Int = input.map { it.split(" | ")[1].split(" ").count { s -> uniqueLengths.contains(s.length) } }.sum()
 
-fun solve2(): Int {
-    var sum = 0
-    for (line in input) {
+fun solve2(): Int = input.sumOf { line ->
         val splitted = line.split(" | ")
         val conf = generateConfig(splitted[0].split(" "))
         val nums = splitted[1].split(" ")
         var finalNum = ""
         for (n in nums) {
-            if(n == "ed")
-                println("break")
             finalNum += getIntRepresentation(n, conf).toString()
         }
-        sum += finalNum.toInt()
+        finalNum.toInt()
     }
-    return sum
-}
+
 
 fun generateConfig(input: List<String>): Array<CharArray> {
     val conf = Array(4) { "".toCharArray() } //1, 4, 7, 8
