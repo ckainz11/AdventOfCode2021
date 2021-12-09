@@ -12,6 +12,15 @@ fun <T> Matrix<T>.getRowNum(): Int = this.size
 fun <T> Matrix<T>.transposed(times: Int = 1): Matrix<T> = transposeMatrix(this, times)
 fun <T> emptyMatrixOf(rows: Int, columns: Int, default: T) = MutableList(rows) {MutableList(columns) {default} }
 fun <T> Matrix<T>.count(predicate: (T) -> Boolean) = this.sumOf { it.count(predicate) }
+fun <T> Matrix<T>.getAdjacent(row: Int, col: Int): List<T> = this.getAdjacentCoordinates(row, col).map { it -> this[it.y][it.x] }
+fun <T> Matrix<T>.getAdjacentCoordinates(row: Int, col: Int): List<Point> {
+    val adjacent = mutableListOf<Point>()
+    if(col != 0) adjacent.add(Point(col - 1, row))
+    if(col != this.getColNum()-1) adjacent.add(Point(col + 1, row))
+    if(row != 0) adjacent.add(Point(col, row - 1))
+    if(row != this.getRowNum()-1) adjacent.add(Point(col, row + 1))
+    return adjacent
+}
 data class Point(val x: Int, val y: Int)
 data class Point3(val x: Int, val y: Int, val z: Int)
 

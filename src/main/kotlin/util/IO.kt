@@ -15,3 +15,9 @@ fun getInputAsIntArray(day: Int): List<Int> {
         .lines()
         .map { it.toInt() }
 }
+fun getInputAsIntMatrix(day: Int): Matrix<Int>  {
+    return getInputAsText(day)
+        .lines()
+        .map { it.toCharArray().map {c -> c.toString().toInt()} }
+
+}
