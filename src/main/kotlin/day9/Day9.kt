@@ -24,7 +24,7 @@ val visited = mutableListOf<Point>()
 fun solve2(): Int {
     val basins = mutableListOf<List<Point>>()
     for((i, row) in input.withIndex()){
-        for((j, col) in row.withIndex()){
+        for(j in row.indices) {
             if(input[i][j] != 9 && !pointIsVisited(Point(j, i)) )
                 basins.add(findBasin(i, j))
         }
@@ -40,6 +40,4 @@ fun findBasin(row: Int, col: Int): List<Point> {
     }
     return basin
 }
-fun pointIsVisited(point: Point): Boolean {
-    return visited.any { it -> it.x == point.x && it.y == point.y }
-}
+fun pointIsVisited(point: Point): Boolean = visited.any { it.x == point.x && it.y == point.y }
