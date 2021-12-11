@@ -1,50 +1,63 @@
 package day11
 
-import util.Point
-import util.getInputAsIntMatrix
-import util.getSurroundingCoordinates
-import util.matrixToString
+import util.*
 
-val input = getInputAsIntMatrix(11).map { it.toMutableList() }.toMutableList()
+val input = getInputAsIntMatrix(11).map { it.map { o -> Octopus(o, false) }.toMutableList() }.toMutableList()
 var alreadyFlashed = mutableListOf<Point>()
+var flashCount = 0
 fun solve1(): Int {
     println("Before any steps")
-    println(input.matrixToString())
-    repeat(2) {
+    println(input.mapMatrix {o -> o.charge }.matrixToString())
+    repeat(100) {
         playStep()
         println("After step ${it+1}:")
-        println(input.matrixToString())
+        println(input.mapMatrix {o -> o.charge }.matrixToString())
         alreadyFlashed = mutableListOf()
     }
-    return 0
+    return flashCount
+}
+fun solve2(): Int {
+    var step = 100
+    while (!input.mapMatrix { it.charge == 0 }.all { row -> row.all { it } }) {
+        step += 1
+        playStep()
+    }
+    return step
 }
 private fun playStep() {
-    val flashers = mutableListOf<Point>()
+    val flashers = mutableSetOf<Point>()
     for((y, row) in input.withIndex()){
-        for(x in row.indices) {
-            input[y][x] += 1
-            if(input[y][x] > 9)
-                flashers.add(Point(x,y))
+        for((x, o) in row.withIndex()){
+            input[y][x] = Octopus(o.charge + 1, o.hasFlashed)
+            val newO = input[y][x]
+            if(newO.charge > 9 && !newO.hasFlashed) {
+                input[y][x] = Octopus(newO.charge, true)
+                flashCount++
+                flashers.add(Point(x, y))
+            }
         }
     }
-    flash(flashers)
-
+    if(flashers.isNotEmpty())
+        flash(flashers)
 }
-private fun flash(flashers: List<Point>) {
-    val nextFlashers = mutableListOf<Point>()
-    for(flash in flashers){
-        for(s in input.getSurroundingCoordinates(flash.y, flash.x)) {
-            if(input[s.y][s.x] != 0 && input[s.y][s.x] < 9)
-                input[s.y][s.x] += 1
-            if(input[s.y][s.x] == 9 && !hasFlashed(Point(s.x, s.y)))
-                nextFlashers.add(Point(s.x ,s.y))
+
+private fun flash(flashers: MutableSet<Point>) {
+    val nextFlashers = mutableSetOf<Point>()
+    for(p in flashers){
+        for(adjC in input.getSurroundingCoordinates(p)){
+            var adj = input[adjC.y][adjC.x]
+            input[adjC.y][adjC.x] = Octopus(adj.charge + 1, adj.hasFlashed)
+            adj = input[adjC.y][adjC.x]
+            if(adj.charge > 9 && !adj.hasFlashed) {
+                nextFlashers.add(adjC)
+                input[adjC.y][adjC.x] = Octopus(adj.charge, true)
+                flashCount++
+            }
         }
-        input[flash.y][flash.x] = 0
-        alreadyFlashed.add(Point(flash.x, flash.y))
     }
-    //println("------------------")
-    //println(input.matrixToString())
     if(nextFlashers.isNotEmpty())
         flash(nextFlashers)
+    for(p in flashers) {input[p.y][p.x] = Octopus(0, false)}
 }
-private fun hasFlashed(point: Point): Boolean = alreadyFlashed.any { point.x == it.x && point.y == it.y }
+
+data class Octopus(val charge: Int, val hasFlashed: Boolean)
