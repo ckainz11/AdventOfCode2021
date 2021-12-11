@@ -1,7 +1,9 @@
 package util
 
 typealias Matrix<T> = List<List<T>>
+typealias MutableMatrix<T> = MutableList<MutableList<T>>
 fun <T> matrixOf(vararg rows: List<T>): Matrix<T> = List(rows.size) {i -> rows[i]}
+fun <T> Matrix<T>.toMutableMatrix(): MutableMatrix<T> = this.map { it.toMutableList() }.toMutableList()
 fun <T> Matrix<T>.getColumn(col: Int): List<T> = getCol(this, col)
 fun <T, R> Matrix<T>.mapMatrix(transform: (T) -> R): Matrix<R> = this.map { it.map(transform) }
 fun <T> Matrix<T>.matrixToString(): String = this.joinToString("\n") { it.joinToString(", ") }
@@ -21,12 +23,9 @@ fun <T> Matrix<T>.getAdjacentCoordinates(row: Int, col: Int): List<Point> {
     if(row != this.getRowNum()-1) adjacent.add(Point(col, row + 1))
     return adjacent
 }
+fun <T> Matrix<T>.getAdjacentCoordinates(point: Point): List<Point> = getAdjacentCoordinates(point.y, point.x)
 fun <T> Matrix<T>.getSurroundingCoordinates(row: Int, col: Int): List<Point> {
-    val adjacent = mutableListOf<Point>()
-    if(col != 0) adjacent.add(Point(col - 1, row))
-    if(col != this.getColNum()-1) adjacent.add(Point(col + 1, row))
-    if(row != 0) adjacent.add(Point(col, row - 1))
-    if(row != this.getRowNum()-1) adjacent.add(Point(col, row + 1))
+    val adjacent = getAdjacentCoordinates(row, col).toMutableList()
     if(col != 0 && row != 0) adjacent.add(Point(col-1, row-1))
     if(col != 0 && row != this.getRowNum() - 1) adjacent.add(Point(col-1, row + 1))
     if(col != this.getColNum() - 1 && row != 0) adjacent.add(Point(col + 1, row - 1))
