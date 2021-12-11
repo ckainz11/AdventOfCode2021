@@ -21,6 +21,18 @@ fun <T> Matrix<T>.getAdjacentCoordinates(row: Int, col: Int): List<Point> {
     if(row != this.getRowNum()-1) adjacent.add(Point(col, row + 1))
     return adjacent
 }
+fun <T> Matrix<T>.getSurroundingCoordinates(row: Int, col: Int): List<Point> {
+    val adjacent = mutableListOf<Point>()
+    if(col != 0) adjacent.add(Point(col - 1, row))
+    if(col != this.getColNum()-1) adjacent.add(Point(col + 1, row))
+    if(row != 0) adjacent.add(Point(col, row - 1))
+    if(row != this.getRowNum()-1) adjacent.add(Point(col, row + 1))
+    if(col != 0 && row != 0) adjacent.add(Point(col-1, row-1))
+    if(col != 0 && row != this.getRowNum() - 1) adjacent.add(Point(col-1, row + 1))
+    if(col != this.getColNum() - 1 && row != 0) adjacent.add(Point(col + 1, row - 1))
+    if(col != this.getColNum() - 1 && row != this.getRowNum() - 1) adjacent.add(Point(col + 1, row + 1))
+    return adjacent
+}
 data class Point(val x: Int, val y: Int)
 data class Point3(val x: Int, val y: Int, val z: Int)
 
