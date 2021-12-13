@@ -33,7 +33,7 @@ fun <T> Matrix<T>.getSurroundingCoordinates(row: Int, col: Int): List<Point> {
     return adjacent
 }
 fun <T> Matrix<T>.getSurroundingCoordinates(point: Point): List<Point> = this.getSurroundingCoordinates(point.y, point.x)
-data class Point(val x: Int, val y: Int) {
+data class Point(var x: Int, var y: Int) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
