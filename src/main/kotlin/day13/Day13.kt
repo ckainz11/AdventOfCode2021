@@ -2,21 +2,11 @@ package day13
 
 import util.Point
 import util.getInputAsText
-val input = getInputAsText(13).lines()
-val points = mutableSetOf<Point>()
-val instructions = mutableListOf<String>()
+val input = getInputAsText(13).lines().partition { !it.startsWith("fold") }
+val points = input.first.dropLast(1).map { it.split(",").map { coord -> coord.toInt() }.let { (x,y) -> Point(x, y) } }.toMutableSet()
+val instructions = input.second.map { it.split(" ")[2] }
 
 fun solve1(): Int {
-    for(line in input){
-        if(line.startsWith("fold")){
-            instructions.add(line.split(" ")[2])
-        }
-        else if(line.isNotEmpty()){
-            val data = line.split(",")
-            val point = Point(data[0].toInt(), data[1].toInt())
-            points.add(point)
-        }
-    }
     val foldPoint = instructions[0].split("=")
     val newPoints = fold(foldPoint[0], foldPoint[1].toInt())
     points.addAll(newPoints)
@@ -28,7 +18,6 @@ fun solve2(): String {
         val newPoints = fold(foldPoint[0], foldPoint[1].toInt())
         points.addAll(newPoints)
     }
-
 
     for(y in points.minOf { it.y } .. points.maxOf { it.y }){
         for(x in points.minOf { it.x } .. points.maxOf { it.x }){
