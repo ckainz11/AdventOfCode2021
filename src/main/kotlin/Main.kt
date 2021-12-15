@@ -1,5 +1,5 @@
-import day14.solve1
-import day14.solve2
+import day15.solve1
+import day15.solve2
 import kotlin.system.measureTimeMillis
 
 fun main() {
