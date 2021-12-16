@@ -1,5 +1,7 @@
 package util
 
+import java.util.*
+
 typealias Matrix<T> = List<List<T>>
 typealias MutableMatrix<T> = MutableList<MutableList<T>>
 fun <T> matrixOf(vararg rows: List<T>): Matrix<T> = List(rows.size) {i -> rows[i]}
@@ -53,6 +55,31 @@ data class Point(var x: Int, var y: Int) {
     }
 }
 data class Point3(val x: Int, val y: Int, val z: Int)
+fun  String.hexToBinaryString(): String {
+    val num = this.uppercase(Locale.getDefault())
+    var binary = ""
+    for(hex in num){
+        when(hex){
+            '0' -> binary += "0000"
+            '1' -> binary += "0001"
+            '2' -> binary += "0010"
+            '3' -> binary += "0011"
+            '4' -> binary += "0100"
+            '5' -> binary += "0101"
+            '6' -> binary += "0110"
+            '7' -> binary += "0111"
+            '8' -> binary += "1000"
+            '9' -> binary += "1001"
+            'A' -> binary += "1010"
+            'B' -> binary += "1011"
+            'C' -> binary += "1100"
+            'D' -> binary += "1101"
+            'E' -> binary += "1110"
+            'F' -> binary += "1111"
+        }
+    }
+    return binary
+}
 
 /*----- Helper Functions -----*/
 
