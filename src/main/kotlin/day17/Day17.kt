@@ -35,7 +35,6 @@ private fun shoot(pos: Point, vel: Point, highest: Int = Int.MIN_VALUE): Int{
         shoot(newPos, applyForces(vel), newHighest)
     }
 }
-
 private fun applyForces(vel: Point): Point {
     val offX = if(vel.x > 0) -1 else if(vel.x < 0) 1 else 0
     return Point(vel.x + offX, vel.y - 1)
