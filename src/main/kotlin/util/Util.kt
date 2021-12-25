@@ -5,6 +5,7 @@ import java.util.*
 typealias Matrix<T> = List<List<T>>
 typealias MutableMatrix<T> = MutableList<MutableList<T>>
 fun <T> matrixOf(vararg rows: List<T>): Matrix<T> = List(rows.size) {i -> rows[i]}
+fun <T> matrixOf(rows: List<List<T>>): Matrix<T> = List(rows.size) {i -> rows[i]}
 fun <T> Matrix<T>.toMutableMatrix(): MutableMatrix<T> = this.map { it.toMutableList() }.toMutableList()
 fun <T> Matrix<T>.getColumn(col: Int): List<T> = getCol(this, col)
 fun <T, R> Matrix<T>.mapMatrix(transform: (T) -> R): Matrix<R> = this.map { it.map(transform) }
@@ -35,25 +36,7 @@ fun <T> Matrix<T>.getSurroundingCoordinates(row: Int, col: Int): List<Point> {
     return adjacent
 }
 fun <T> Matrix<T>.getSurroundingCoordinates(point: Point): List<Point> = this.getSurroundingCoordinates(point.y, point.x)
-data class Point(var x: Int, var y: Int) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Point
-
-        if (x != other.x) return false
-        if (y != other.y) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = x
-        result = 31 * result + y
-        return result
-    }
-}
+data class Point(var x: Int, var y: Int)
 data class Point3(val x: Int, val y: Int, val z: Int)
 fun  String.hexToBinaryString(): String {
     val num = this.uppercase(Locale.getDefault())
